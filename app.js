@@ -128,6 +128,7 @@ function oauth(req, res, next) {
     if (apiConfig.oauth) {
         var apiKey = req.body.apiKey || req.body.key,
             apiSecret = req.body.apiSecret || req.body.secret,
+            userAccessToken = req.body.userAccessToken || req.body.userToken,
             refererURL = url.parse(req.headers.referer),
             callbackURL = refererURL.protocol + '//' + refererURL.host + '/authSuccess/' + apiName,
             oa = new OAuth(apiConfig.oauth.requestURL,
@@ -281,6 +282,7 @@ function processRequest(req, res, next) {
         httpMethod = reqQuery.httpMethod,
         apiKey = reqQuery.apiKey,
         apiSecret = reqQuery.apiSecret,
+        userAccessToken = reqQuery.userAccessToken,
         apiName = reqQuery.apiName
         apiConfig = apisConfig[apiName],
         key = req.sessionID + ':' + apiName;
@@ -485,6 +487,17 @@ function processRequest(req, res, next) {
                 options.path += '?';
             }
             options.path += apiConfig.keyParam + '=' + apiKey;
+        }
+
+        // Add User Access Token to params, if any.
+        if (userAccessToken != '' && userAccessToken != 'undefined' && userAccessToken != undefined) {
+            if (options.path.indexOf('?') !== -1) {
+                options.path += '&';
+            }
+            else {
+                options.path += '?';
+            }
+            options.path += 'access_token=' + userAccessToken;
         }
 
         // Perform signature routine, if any.

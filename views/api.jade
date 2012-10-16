@@ -38,6 +38,9 @@ form#credentials
              - if (apiInfo.oauth && apiInfo.oauth.type !='two-legged')
                  div
                     input(name='oauth', value='Authenticate with OAuth', type='submit', id='oauth-auth')
+             div
+                 label(for='userToken') User Access Token
+                 input(id='userToken', name='userToken', value='', style='color=#EEEEEE')
 
 div(id='controls')
     ul
