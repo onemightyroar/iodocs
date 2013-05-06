@@ -1,6 +1,6 @@
 I/O Docs - Open Source in Node.js
 =================================
-Copyright 2011 Mashery, Inc.
+Copyright 2012-2013 Mashery, Inc.
 
 [http://www.mashery.com](http://www.mashery.com)
 
@@ -56,6 +56,16 @@ RUNNING I/O DOCS
 2. node ./app.js
 3. Point your browser to: [http://localhost:3000](http://localhost:3000)
 
+
+BASIC AUTH FOR SERVER
+---------------------
+Enabling HTTP basic authentication on the server is simple. By default, the username and password values are empty ("").
+
+1. Open up *config.json*
+2. Navigate down to the *basicAuth* object
+3. Add values for username and password within the object
+
+
 QUICK API CONFIGURATION EXAMPLE
 -------------------------------
 Adding an API to the I/O Docs configuration is relatively simple.
@@ -71,7 +81,11 @@ Example:
     "baseURL": "api.lowercase.sample.com",
     "publicPath": "/v1",
     "auth": "key",
-    "keyParam": "api_key_var_name"
+    "keyParam": "api_key_var_name",
+    "headers": {
+                "Accept": "application/json",
+                "Foo": "bar"
+    }
 }
 ```
 
@@ -115,12 +129,16 @@ The *apiconfig.json* file contains high-level information about an API.
 
 ```js
 "lower": {
-   "name": "My API",
-   "protocol": "http",
-   "baseURL": "api.lowercase.sample.com",
-   "publicPath": "/v1",
-   "auth": "key",
-   "keyParam": "api_key_var_name"
+    "name": "My API",
+    "protocol": "http",
+    "baseURL": "api.lowercase.sample.com",
+    "publicPath": "/v1",
+    "auth": "key",
+    "keyParam": "api_key_var_name",
+    "headers": {
+                "Accept": "application/json",
+                "Foo": "bar"
+    }
 }
 ```
 
@@ -156,9 +174,13 @@ Line:
 
 7. "keyParam" key value is name of the query parameter that
     is added to an API request when the "auth" key value from
-    (5) is set to "key"
+    (5) is set to "key".
 
-8. Closing curly-bracket ;)
+8. "headers" object contains key value pairs of HTTP headers
+    that will be sent for each request for API. These are
+    static key/value pairs.
+
+12. Closing curly-bracket ;)
 
 
 ---
@@ -253,12 +275,12 @@ Line:
     "oauth" : {
        "type": "three-legged",
        "requestURL": "https://api.twitter.com/oauth/request_token",
-       "signinURL": "https://api.twitter.com/oauth/authorize?oauth_token="
+       "signinURL": "https://api.twitter.com/oauth/authorize?oauth_token=",
        "accessURL": "https://api.twitter.com/oauth/access_token",
        "version": "1.0",
-       "crypt": "HMAC-SHA1",
-   }
-   "keyParam": "",
+       "crypt": "HMAC-SHA1"
+   },
+   "keyParam": ""
 }
 ```
 
